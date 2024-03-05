@@ -41,7 +41,15 @@
       };
 
       addTemplate(templateKey, newTemplate);
+
+      reset();
     }
+  }
+
+  function reset() {
+    templateKey = "";
+    templateContent = "";
+    templateParams = [{ _key: getId(), name: "", table: "" }];
   }
 </script>
 
@@ -93,6 +101,7 @@
   {/if}
   <div class="buttons">
     <button class="button is-light" on:click={addParam}>Add Parameter</button>
+    <button class="button is-light" on:click={reset}>Reset</button>
     <button class="button is-primary" on:click={saveTemplate}>Save</button>
   </div>
 </div>
