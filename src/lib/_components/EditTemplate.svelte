@@ -1,5 +1,5 @@
 <script>
-  import { templates } from "$lib/store/template";
+  import { addTemplate } from "$lib/store/template";
   import { nanoid } from "nanoid";
 
   const localNanoIdLength = 14;
@@ -29,16 +29,18 @@
   }
 
   function saveTemplate() {
-    if (templateKey && templateContent != null && templateContent !== "" && templateParams.length > 0) {
+    if (
+      templateKey &&
+      templateContent != null &&
+      templateContent !== "" &&
+      templateParams.length > 0
+    ) {
       const newTemplate = {
         template: templateContent,
         params: templateParams.map(({ name, table }) => ({ name, table })),
       };
 
-      templates.update((state) => {
-        state[templateKey] = newTemplate;
-        return state;
-      });
+      addTemplate(templateKey, newTemplate);
     }
   }
 </script>
@@ -66,7 +68,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each templateParams as param,i}
+        {#each templateParams as param, i}
           <tr>
             <td>
               <div class="control">

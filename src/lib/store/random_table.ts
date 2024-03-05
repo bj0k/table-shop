@@ -23,14 +23,14 @@ export function addTable(tableKey: string, init: RandomTableInit) {
   });
 }
 
-export async function refeshFromDb() {
+export async function restoreTableDefState() {
   const itemsFromDb = await DB.listAllTableDefs();
-  const _keys = itemsFromDb.map((item) => [item.id, item.key]);
+  // const _keys = itemsFromDb.map((item) => [item.id, item.key]);
   const loadedTables = itemsFromDb.reduce((loader, entity) => {
     loader[entity.key] = createRandomTable(entity.body);
     return loader;
   }, {} as TableStore);
-  console.log(_keys);
+  // console.log(_keys);
 
   randomTables.update(() => loadedTables);
 }

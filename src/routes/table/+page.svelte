@@ -1,5 +1,5 @@
 <script>
-  import CreateTable from "$lib/_components/CreateTable.svelte";
+  import EditRandomTable from "$lib/_components/EditRandomTable.svelte";
   import EditTemplate from "$lib/_components/EditTemplate.svelte";
   import TemplateRenderer from "$lib/_components/TemplateRenderer.svelte";
   import { templates } from "$lib/store/template";
@@ -8,14 +8,14 @@
   let data;
 
   templates.subscribe((tmplStore) => {
-    console.log("/table +page.svelte", tmplStore);
+    console.log("/table +page.svelte templates", tmplStore);
   });
 </script>
 
 <section>
   <h3 class="title is-3">Define Random Table</h3>
   <details>
-    <CreateTable />
+    <EditRandomTable />
   </details>
 
   <h3 class="title is-3">Define Template</h3>

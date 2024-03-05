@@ -1,11 +1,10 @@
 import { Dexie } from "dexie";
 import type { Table } from "dexie";
 import type { RandomTableInit } from "$lib/random_table";
+import type { TemplateBody } from "$lib/template";
 
-export const TABLE_SHOP_LEVEL_ROOT = `tableshop`;
+export const TABLE_SHOP_IDB_NAME = `tableshop`;
 export const TABLE_SHOP_DB_VERSION = 1;
-export const TABLE_SHOP_SUBLEVEL_RANDOM = `random_table`;
-export const TABLE_SHOP_SUBLEVEL_TMPL = `template`;
 
 export interface RandomTableEntity {
   id?: number;
@@ -15,7 +14,8 @@ export interface RandomTableEntity {
 
 export interface TemplateEntity {
   id?: number;
-  content: string;
+  key: string;
+  tmpl: TemplateBody;
 }
 
 export class MyDexie extends Dexie {
@@ -23,7 +23,7 @@ export class MyDexie extends Dexie {
   templates!: Table<TemplateEntity>;
 
   constructor() {
-    super(TABLE_SHOP_LEVEL_ROOT);
+    super(TABLE_SHOP_IDB_NAME);
     this.version(TABLE_SHOP_DB_VERSION).stores({
       randomTables: `++id, key, body`,
       templates: `++id, content`,
@@ -59,6 +59,20 @@ export async function loadTableDef(
 
 export async function listAllTableDefs() {
   return db.randomTables.toArray();
+}
+
+export async function saveTemplate(
+  templateKey: string,
+  templateBody: TemplateBody,
+) {
+  return await db.templates.add({
+    key: templateKey,
+    tmpl: templateBody,
+  });
+}
+
+export async function listAllTemplates() {
+  return db.templates.toArray();
 }
 
 // async function _runDb<T>(action: (state: typeof db) => Promise<T>): Promise<T> {
