@@ -26,7 +26,7 @@ export class MyDexie extends Dexie {
     super(TABLE_SHOP_IDB_NAME);
     this.version(TABLE_SHOP_DB_VERSION).stores({
       randomTables: `++id, key, body`,
-      templates: `++id, content`,
+      templates: `++id, key, tmpl`,
     });
   }
 }

@@ -40,12 +40,7 @@
 
     <div class="field">
       <p class="control">
-        <input
-          type="text"
-          class="input"
-          bind:value={templateContent}
-          placeholder={tmplBodyPlaceholder}
-        />
+        <textarea class="textarea" bind:value={templateContent} placeholder={tmplBodyPlaceholder} />
       </p>
     </div>
 
