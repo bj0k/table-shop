@@ -31,15 +31,7 @@ export class MyDexie extends Dexie {
   }
 }
 
-let db: MyDexie;
-
-export async function initTableShopDb() {
-  if (db == null) {
-    db = new MyDexie();
-  }
-
-  return db;
-}
+const db = new MyDexie();
 
 export async function saveNewTableDef(
   tableKey: string,

@@ -21,6 +21,10 @@ export class Roll {
     return result;
   }
 
+  d1000(size: number) {
+    return this.roll({ face: 1000, size });
+  }
+
   d100(size: number) {
     return this.roll({ face: 100, size });
   }

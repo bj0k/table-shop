@@ -1,36 +1,69 @@
-<script>
+<script lang="ts">
+  import type { ChangeEventHandler } from "svelte/elements";
+  import { capitalCase } from "change-case";
   import Papa from "papaparse";
 
-  let csvString = "";
+  import { parseDice, type DicePool, type DieFace } from "$lib/dice_bot";
+  import type { RandomTableInit } from "$lib/random_table";
+  import { addTable } from "$lib/store/random_table";
 
-  /** @type import("$lib/random_table").RandomTableInit["items"] */
-  let tableDef = [];
+  let csvString = "";
+  let tableKey = "";
+  let diceExpr = "1d6";
+
+  let tableDef: RandomTableInit["items"] = [];
 
   let errorMessage = "";
 
   $: hasParseError = errorMessage !== "";
 
+  let pool: DicePool = parseDice(diceExpr);
+
+  const onExpressionChange2: ChangeEventHandler<HTMLInputElement> = (evt) => {
+    try {
+      /** @type string */
+      const newExpr = evt.currentTarget.value;
+      const newPool = parseDice(newExpr);
+
+      pool = newPool;
+      diceExpr = newExpr;
+    } catch (_err) {
+      return;
+    }
+  };
+
   function onSave() {
-    /** @type Papa.ParseResult<import("$lib/random_table").RandomTableInit["items"][number]> */
-    const parsed = Papa.parse(csvString, {
+    if (pool == null || tableKey === "") {
+      return;
+    }
+
+    const parsed = Papa.parse<(typeof tableDef)[number]>(csvString, {
       header: true,
       dynamicTyping: true,
     });
-    const hasInvalidData = !(parsed.data.every(checkEntry));
+    const hasInvalidData = !parsed.data.every(checkEntry);
 
     if (parsed.errors.length || hasInvalidData) {
       errorMessage = parsed.errors.join("\n");
     } else {
       errorMessage = "";
       tableDef = parsed.data;
+
+      const randomTable: RandomTableInit = {
+        tableName: capitalCase(tableKey),
+        dice: {
+          count: pool.count,
+          face: `d${pool.face}` as DieFace,
+        },
+        items: tableDef,
+      };
+      // console.log(randomTable);
+
+      addTable(tableKey, randomTable);
     }
   }
 
-  /**
-   *
-   * @param {Partial<import("$lib/random_table").RandomTableInit["items"][number]>} entry
-   */
-  function checkEntry(entry) {
+  function checkEntry(entry: (typeof tableDef)[number]) {
     try {
       const value = entry?.value;
       return (
@@ -45,6 +78,21 @@
 </script>
 
 <div>
+  <p class="subtitle">Import TSV</p>
+  <div class="field is-grouped">
+    <p class="control">
+      <input type="text" class="input" placeholder="tableKey" bind:value={tableKey} />
+    </p>
+    <div class="control">
+      <input
+        type="text"
+        class="input"
+        placeholder="1d6"
+        bind:value={diceExpr}
+        on:change={onExpressionChange2}
+      />
+    </div>
+  </div>
   <div class="field">
     <div class="control">
       <textarea name="" id="" class="textarea is-family-code" bind:value={csvString}></textarea>
@@ -53,13 +101,18 @@
 
   <div class="field">
     <div class="control">
-      <button class="button is-primary" on:click={onSave}>Save</button>
+      <input
+        type="button"
+        class="button is-primary"
+        value="Save"
+        disabled={pool == null || tableKey === ""}
+        on:click={onSave}
+      />
     </div>
   </div>
   {#if hasParseError}
     <p class="notification is-danger">{errorMessage}</p>
-  {:else}
-    {#if tableDef.length}
+  {:else if tableDef.length}
     <div class="columns">
       <div class="column is-half">
         <table class="table is-narrow is-hoverable">
@@ -75,6 +128,5 @@
         </table>
       </div>
     </div>
-    {/if}
   {/if}
 </div>
