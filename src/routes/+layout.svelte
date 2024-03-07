@@ -1,4 +1,5 @@
 <script>
+  import { savedPickerPageData } from "$lib/store/path_encoded_picker_data";
   import "$lib/bulma.min.css";
 </script>
 
@@ -19,6 +20,9 @@
       </li>
       <li>
         <a href="/table/template">Template</a>
+      </li>
+      <li>
+        <a href={"/picker/" + $savedPickerPageData}>Picker</a>
       </li>
     </ul>
   </nav>
