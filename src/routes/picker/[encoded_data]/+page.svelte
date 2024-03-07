@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { savedPickerPageData, updatePageData } from "$lib/store/path_encoded_picker_data";
+  import { pushState } from "$app/navigation";
+  import { page } from "$app/stores";
+  import { updatePageData, savedPickerPageData } from "$lib/store/path_encoded_picker_data";
   import * as Yaml from "js-yaml";
   import nunjucks from "nunjucks";
   import type { PageData } from "./$types";
-  import type { GeneratorDataType, GeneratorInit, GeneratorValueType } from "$lib/picker";
+  import type { GeneratorInit, GeneratorValueType } from "$lib/picker";
   import { makeRandomPicker } from "$lib/picker";
 
   export let data: PageData;
@@ -14,6 +16,10 @@
 
   let currentOptions = _loadGeneratorInit(data, generatorSource);
   let randomPicker = makeRandomPicker(currentOptions);
+
+  savedPickerPageData.subscribe((nextState) => {
+    pushState("../" + nextState, $page.state);
+  });
 
   function _restoreGeneratorSource(initialData: PageData): string {
     if (initialData?.d != null) {

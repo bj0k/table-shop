@@ -3,7 +3,7 @@
   import "$lib/bulma.min.css";
 </script>
 
-<section class="hero is-small is-primary">
+<section class="hero is-small is-dark">
   <div class="hero-body">
     <h1 class="title">Tableshop</h1>
   </div>

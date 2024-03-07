@@ -13,7 +13,6 @@ export function load({ params }): Partial<CrushedPageParams> {
       JSONCrush.uncrush(decodeURIComponent(params.encoded_data)),
     );
 
-    console.log("/picker/[encoded_data] +page.ts", res);
     return res;
   }
 

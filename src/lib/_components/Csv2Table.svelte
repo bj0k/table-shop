@@ -16,7 +16,6 @@
       header: true,
       dynamicTyping: true,
     });
-    console.log(parsed);
     const hasInvalidData = !(parsed.data.every(checkEntry));
 
     if (parsed.errors.length || hasInvalidData) {
