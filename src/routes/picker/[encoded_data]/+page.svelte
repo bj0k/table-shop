@@ -18,7 +18,7 @@
   let randomPicker = makeRandomPicker(currentOptions);
 
   savedPickerPageData.subscribe((nextState) => {
-    pushState("../" + nextState, $page.state);
+    pushState("./" + nextState, $page.state);
   });
 
   function _restoreGeneratorSource(initialData: PageData): string {
