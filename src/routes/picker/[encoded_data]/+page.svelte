@@ -93,7 +93,7 @@
 <div>
   <h3 class="title is-3">Simple Text Generator</h3>
 
-  <hr>
+  <hr />
 
   <p class="subtitle">Define your data as YAML:</p>
   <div class="field">
@@ -122,7 +122,12 @@
                 </th>
                 <td>
                   <p class="control">
-                    <input type="text" class="input" readonly value={_getInitParam(name, currentOptions)}>
+                    <input
+                      type="text"
+                      class="input"
+                      readonly
+                      value={_getInitParam(name, currentOptions)}
+                    />
                   </p>
                 </td>
               </tr>
@@ -136,35 +141,34 @@
 
 <div class="block mt-4">
   <p class="subtitle">Write template using data above:</p>
-  <div class="columns">
-    <div class="column">
-      <div class="field">
-        <div class="control">
-          <textarea
-            name=""
-            id=""
-            class="textarea is-family-code"
-            placeholder="Template"
-            bind:value={templateText}
-            on:change={() => updatePageData(templateText, currentOptions.data)}
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="field">
-        <div class="control">
-          <input
-            type="button"
-            class="button is-primary"
-            value="Generate"
-            on:click={onClickGenerate}
-            disabled={templateText === ""}
-          />
-        </div>
-      </div>
+  <div class="field">
+    <div class="control">
+      <textarea
+        name=""
+        id=""
+        class="textarea is-family-code"
+        placeholder="Template"
+        bind:value={templateText}
+        on:change={() => updatePageData(templateText, currentOptions.data)}
+      ></textarea>
     </div>
-    <div class="column">
-      <pre>{resultText}</pre>
+  </div>
+  <div class="field">
+    <div class="control">
+      <input
+        type="button"
+        class="button is-primary"
+        value="Generate"
+        on:click={onClickGenerate}
+        disabled={templateText === ""}
+      />
     </div>
+  </div>
+  <div class="notification content is-medium">
+    {#each resultText.split("\n") as line}
+      {#if line != ""}
+        <p>{line}</p>
+      {/if}
+    {/each}
   </div>
 </div>
