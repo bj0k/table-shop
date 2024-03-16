@@ -36,11 +36,13 @@
   }
 </script>
 
-<div class="content">
+<div class="content is-medium">
   <h4>Generate Texts!</h4>
 
   {#if selectedTemplate}
-    <p>{renderResult}</p>
+    {#each renderResult.split("\n") as para}
+      <p>{para}</p>
+    {/each}
 
     {#if showTemplateSource}
       <pre>{selectedTemplate.template}</pre>

@@ -53,6 +53,10 @@ export class RandomTable<T> {
     public elements: TableElement<T>[] = [],
   ) {}
 
+  get expr() {
+    return this.dice.count + this.dice.face;
+  }
+
   addElement(start: number, end: number, value: T): this {
     const element = new TableElement(start, end, value);
     this.elements.push(element);
