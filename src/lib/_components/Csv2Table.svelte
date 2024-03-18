@@ -4,7 +4,7 @@
   import Papa from "papaparse";
 
   import { parseDice, type DicePool, type DieFace } from "$lib/dice_bot";
-  import type { RandomTableInit } from "$lib/random_table";
+  import { RandomTable, type RandomTableInit } from "$lib/random_table";
   import { addTable } from "$lib/store/random_table";
 
   let csvString = "";
@@ -41,13 +41,25 @@
       header: true,
       dynamicTyping: true,
     });
-    const hasInvalidData = !parsed.data.every(checkEntry);
+    const data = (parsed.data ?? ([] as typeof parsed.data)).map((item) => {
+      if ("value" in item) {
+        return item;
+      } else {
+        const item0 = (item as (typeof parsed.data)[number]);
+        return {
+          start: item0.start,
+          end: item0.end,
+          value: item0,
+        };
+      }
+    });
+    const hasInvalidData = !data.every(checkEntry);
 
     if (parsed.errors.length || hasInvalidData) {
       errorMessage = parsed.errors.join("\n");
     } else {
       errorMessage = "";
-      tableDef = parsed.data;
+      tableDef = data;
 
       const randomTable: RandomTableInit = {
         tableName: capitalCase(tableKey),
