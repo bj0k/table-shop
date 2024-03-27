@@ -28,6 +28,7 @@
     "node": "20.11.1"
   },
   "dependencies": {
+    "bulma": "1.0.0",
     "change-case": "^5.4.3",
     "dexie": "^3.2.6",
     "js-yaml": "^4.1.0",
