@@ -1,6 +1,6 @@
 <script>
   import { savedPickerPageData } from "$lib/store/path_encoded_picker_data";
-  import "bulma";
+  import "bulma/css/bulma.min.css";
 </script>
 
 <section class="hero is-small is-dark">
